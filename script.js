@@ -1,13 +1,25 @@
 const bar = document.getElementById('pb');
-const txt = document.getElementById('percent');
-let progress = 0;
+const pct = document.getElementById('percent');
+let val = 0;
 
-const interval = setInterval(() => {
-    progress += Math.random() * 2; // Simula velocidade variável de processamento
-    if (progress >= 100) {
-        progress = 100;
-        clearInterval(interval);
+function update() {
+    val += 0.8; // Velocidade do carregamento
+    
+    if(val >= 100) {
+        val = 100;
+        bar.style.width = val + '%';
+        pct.innerText = '100%';
+        
+        // Aguarda 1 segundo antes de reiniciar
+        setTimeout(() => {
+            val = 0;
+            update();
+        }, 1000);
+    } else {
+        bar.style.width = val + '%';
+        pct.innerText = Math.floor(val) + '%';
+        requestAnimationFrame(update);
     }
-    bar.style.width = progress + '%';
-    txt.innerText = Math.floor(progress) + '%';
-}, 100);
+}
+
+update();

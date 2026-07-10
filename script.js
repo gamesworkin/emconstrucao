@@ -1,7 +1,8 @@
 
-console.log("Sistema em processamento criativo..."); 
+console.log("Portal em modo de construção ativa...");
 
-// Efeito simples de interação: a barra de progresso acelera ao mover o mouse
-window.addEventListener('mousemove', () => {
-    document.querySelector('.bar').style.animationDuration = '0.5s';
+// Aumenta a velocidade de rotação da animação ao interagir
+document.addEventListener('mousemove', (e) => {
+    const loader = document.querySelector('.status-loader');
+    loader.style.animationDuration = '0.5s';
 });

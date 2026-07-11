@@ -10,30 +10,30 @@ const firebaseConfig = {
 
 firebase.initializeApp(firebaseConfig);
 
-// Renderiza lista para editar/excluir
-firebase.database().ref('servicos/').on('value', snap => {
-    const lista = document.getElementById('lista-itens');
-    lista.innerHTML = '';
-    snap.forEach(child => {
-        const div = document.createElement('div');
-        div.className = 'admin-item';
-        div.innerHTML = `<span>${child.val().title}</span> 
-        <button style="width:auto; background:red;" onclick="deletar('${child.key}')">Apagar</button>`;
-        lista.appendChild(div);
+function showTab(type) {
+    const area = document.getElementById('content-area');
+    if(type === 'header') {
+        area.innerHTML = `<h3>Header</h3><input id="t" placeholder="Título"><input id="u" placeholder="URL"><button onclick="add('header')">Adicionar</button><div id="list"></div>`;
+    } else {
+        area.innerHTML = `<h3>Serviços</h3><input id="t" placeholder="Título"><input id="d" placeholder="Desc"><input id="u" placeholder="URL"><input id="l" placeholder="Logo"><button onclick="add('servicos')">Salvar</button><div id="list"></div>`;
+    }
+    renderList(type === 'header' ? 'header' : 'servicos');
+}
+
+function add(path) {
+    const data = { title: document.getElementById('t').value, url: document.getElementById('u').value };
+    if(path === 'servicos') { data.desc = document.getElementById('d').value; data.logo = document.getElementById('l').value; }
+    firebase.database().ref(path).push(data);
+}
+
+function renderList(path) {
+    firebase.database().ref(path).on('value', snap => {
+        const list = document.getElementById('list'); list.innerHTML = '';
+        snap.forEach(c => {
+            list.innerHTML += `<div class="item-row">${c.val().title} <button style="width:auto;background:red" onclick="firebase.database().ref('${path}/${c.key}').remove()">X</button></div>`;
+        });
     });
-});
-
-function salvarItem() {
-    firebase.database().ref('servicos/').push({
-        title: document.getElementById('s-title').value,
-        desc: document.getElementById('s-desc').value,
-        url: document.getElementById('s-url').value,
-        logo: document.getElementById('s-logo').value
-    }).then(() => alert("Salvo!"));
 }
 
-function deletar(key) {
-    if(confirm("Apagar este serviço?")) firebase.database().ref('servicos/'+key).remove();
-}
-
-function logout() { firebase.auth().signOut().then(() => window.location.href = "index.html"); }
+function exportData() { firebase.database().ref().once('value', s => { const a = document.createElement('a'); a.href = 'data:text/json,'+encodeURIComponent(JSON.stringify(s.val())); a.download='backup.json'; a.click(); }); }
+function importData(e) { const r = new FileReader(); r.onload = (ev) => firebase.database().ref().set(JSON.parse(ev.target.result)); r.readAsText(e.target.files[0]); }

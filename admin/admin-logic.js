@@ -1,4 +1,4 @@
-// Certifique-se de preencher abaixo com seu config real
+// Certifique-se de preencher abaixo com seu config real 
 const firebaseConfig = {
     apiKey: "AIzaSyDiAP2IvsfPac29qzFA71sbLYuizVxZ9HQ",
     authDomain: "portal-workin-store.firebaseapp.com",

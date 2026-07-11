@@ -1,17 +1,18 @@
 <!DOCTYPE html>
-<html lang="pt-br"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Painel Admin</title><link rel="stylesheet" href="../style.css"></head>
+<html lang="pt-br"><head><meta charset="UTF-8"><title>Admin</title><link rel="stylesheet" href="../style.css"></head>
 <body>
     <div class="dynamic-background"></div>
     <main class="main-container">
-        <h1>Admin Control</h1>
-        <button onclick="showTab('header')">Gerenciar Cabeçalho</button>
-        <button onclick="showTab('servico')">Gerenciar Serviços</button>
-        <div id="content-area"></div>
-        <hr style="margin: 20px 0;">
-        <button onclick="exportData()" style="background:#22c55e;">Exportar Backup (JSON)</button>
-        <button onclick="document.getElementById('file-in').click()" style="background:#f59e0b;">Importar Backup (JSON)</button>
-        <input type="file" id="file-in" style="display:none" onchange="importData(event)">
-        <button onclick="firebase.auth().signOut().then(()=>location.href='../')" style="background:#ef4444;">Sair</button>
+        <h1>Painel Admin</h1>
+        <button onclick="render('header')">Gerenciar Cabeçalho</button>
+        <button onclick="render('servicos')">Gerenciar Serviços</button>
+        <div id="controls">
+            <input id="t" placeholder="Título"><input id="d" placeholder="Desc (se for serviço)"><input id="u" placeholder="URL"><input id="l" placeholder="Logo (se for serviço)">
+            <button onclick="add('servicos')">Adicionar Serviço</button>
+            <button onclick="add('header')">Adicionar Header</button>
+        </div>
+        <div id="list"></div>
+        <button onclick="firebase.auth().signOut().then(()=>location.href='index.html')" style="background:#d97706;">Sair</button>
     </main>
     <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-auth-compat.js"></script>

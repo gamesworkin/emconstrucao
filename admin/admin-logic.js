@@ -9,6 +9,17 @@ function exportJSON() {
     });
 }
 
+function importJSON(event) {
+    const file = event.target.files[0];
+    const reader = new FileReader();
+    reader.onload = (e) => {
+        const data = JSON.parse(e.target.result);
+        firebase.database().ref('/').set(data).then(() => alert("Backup importado com sucesso!"));
+    };
+    reader.readAsText(file);
+}
+
+
 function addHeader() {
     const title = document.getElementById('h-title').value;
     const url = document.getElementById('h-url').value;

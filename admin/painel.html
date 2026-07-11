@@ -1,17 +1,15 @@
 <!DOCTYPE html>
-<html lang="pt-br"><head><meta charset="UTF-8"><title>Admin</title><link rel="stylesheet" href="../style.css"></head>
-<body>
-    <div class="dynamic-background"></div>
-    <main class="main-container">
-        <h1>Painel Admin</h1>
-        <button onclick="render('header')">Gerenciar Cabeçalho</button>
-        <button onclick="render('servicos')">Gerenciar Serviços</button>
-        <input id="t" placeholder="Título"><input id="d" placeholder="Descrição"><input id="u" placeholder="URL"><input id="l" placeholder="Logo">
-        <button onclick="add('servicos')">Adicionar Serviço</button>
-        <button onclick="add('header')">Adicionar Header</button>
-        <div id="list"></div>
-    </main>
-    <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-database-compat.js"></script>
-    <script src="admin-logic.js"></script>
+<html><head><meta name="viewport" content="width=device-width, initial-scale=1.0"><link rel="stylesheet" href="../style.css"></head>
+<body><div class="dynamic-background"></div>
+<main class="main-container">
+    <button onclick="render('header')">Gerenciar Header</button>
+    <button onclick="render('servicos')">Gerenciar Serviços</button>
+    <input id="t" placeholder="Título"><input id="d" placeholder="Descrição"><input id="u" placeholder="URL"><input id="l" placeholder="Logo">
+    <button onclick="add('servicos')">Adicionar Serviço</button>
+    <button onclick="add('header')">Adicionar Header</button>
+    <div id="list"></div>
+</main>
+<script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-database-compat.js"></script>
+<script src="admin-logic.js"></script></body></html>
 </body></html>

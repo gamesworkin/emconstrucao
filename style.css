@@ -1,4 +1,4 @@
-:root { --bg: #020202; --accent: #4f46e5; }
+:root { --bg: #020202; --accent: #4f46e5; } 
 * { margin: 0; padding: 0; box-sizing: border-box; }
 body { background: var(--bg); color: #fff; font-family: 'Segoe UI', sans-serif; min-height: 100vh; }
 .dynamic-background { position: fixed; top:0; left:0; width: 100%; height: 100%; z-index: -1; background: linear-gradient(45deg, #f00, #ff7f00, #ff0, #0f0, #00f, #4b0082, #9400d3); background-size: 400% 400%; animation: rgb-rotate 15s ease infinite; filter: blur(100px); }

@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="pt-br"> 
+<head>
+    <meta charset="UTF-8">
+    <title>Gerador de Catálogo de Downloads</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-50 min-h-screen flex items-center justify-center p-6">
+
+    <div class="bg-white p-8 rounded-2xl shadow-xl w-full max-w-lg border border-gray-100">
+        <h1 class="text-2xl font-bold text-gray-800 mb-2">Gerador de Catálogo</h1>
+        <p class="text-gray-500 mb-6 text-sm">Insira os dados para gerar o seu arquivo de catálogo indexado.</p>
+        
+        <div class="space-y-4">
+            <input type="text" id="baseUrl" placeholder="URL Base (ex: https://site.com)" class="w-full p-3 border rounded-lg focus:ring-2 focus:ring-blue-500 outline-none">
+            <input type="file" id="fileInput" multiple class="w-full p-2 border rounded-lg text-sm">
+            <button onclick="gerarArquivoFinal()" class="w-full bg-blue-600 text-white py-3 rounded-lg font-bold hover:bg-blue-700 transition shadow-lg shadow-blue-200">Gerar Catálogo HTML</button>
+        </div>
+    </div>
+
+    <script>
+        function gerarArquivoFinal() {
+            const baseUrl = document.getElementById('baseUrl').value.replace(/\/$/, "");
+            const files = Array.from(document.getElementById('fileInput').files);
+            
+            if(!baseUrl || files.length === 0) { alert("Preencha a URL e selecione os arquivos!"); return; }
+
+            const data = files.map(f => ({ name: f.name.replace(/\.[^/.]+$/, ""), url: `${baseUrl}/${f.name}` }));
+
+            const htmlTemplate = `
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8"><title>Catálogo de Downloads</title>
+    <script src="https://cdn.tailwindcss.com"><\/script>
+</head>
+<body class="bg-gray-50 p-4 md:p-10">
+    <div class="max-w-5xl mx-auto">
+        <h1 class="text-3xl font-bold text-gray-800 mb-6">Meus Arquivos</h1>
+        <input type="text" id="search" onkeyup="filter()" placeholder="Pesquisar arquivos..." class="w-full p-4 rounded-xl border mb-6 shadow-sm">
+        <div id="list" class="grid grid-cols-1 md:grid-cols-3 gap-3"></div>
+        <div id="pagination" class="mt-8 flex justify-center gap-2"></div>
+    </div>
+    <script>
+        const data = ${JSON.stringify(data)};
+        let page = 1; const perPage = 30;
+        function render(filtered = data) {
+            const list = document.getElementById('list');
+            list.innerHTML = filtered.slice((page-1)*perPage, page*perPage).map(i => 
+                \`<a href="\${i.url}" download class="p-4 bg-white border border-gray-200 rounded-lg shadow-sm hover:border-blue-500 hover:text-blue-600 transition truncate">\${i.name}</a>\`
+            ).join('');
+            const pages = Math.ceil(filtered.length/perPage);
+            document.getElementById('pagination').innerHTML = Array.from({length: pages}, (_, i) => 
+                \`<button onclick="page=\${i+1}; render()" class="px-4 py-2 bg-white border rounded shadow-sm hover:bg-blue-50">\${i+1}</button>\`
+            ).join('');
+        }
+        function filter() {
+            const q = document.getElementById('search').value.toLowerCase();
+            page = 1; render(data.filter(i => i.name.toLowerCase().includes(q)));
+        }
+        render();
+    <\/script>
+</body>
+</html>`;
+
+            const blob = new Blob([htmlTemplate], { type: 'text/html' });
+            const a = document.createElement('a');
+            a.href = URL.createObjectURL(blob);
+            a.download = "meu_catalogo.html";
+            a.click();
+        }
+    </script>
+</body>
+</html>
